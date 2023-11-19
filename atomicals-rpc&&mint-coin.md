@@ -308,7 +308,7 @@ services:
 DAEMON_URL=username:password@ip:8332
 ```
 
-然后怒将docker-compose.yml的DAEMON_URL字段换成如下
+然后将docker-compose.yml的DAEMON_URL字段换成如下
 ```
 DAEMON_URL=${DAEMON_URL}
 ```
