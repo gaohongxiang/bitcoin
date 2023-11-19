@@ -188,6 +188,8 @@ magnet:?xt=urn:btih:7KW5OXSWUQ2EFF57URE42GBRL2XCN5AI&dn=ElectrumX-Data-20231114&
 
 ![bitcoin core 配置](https://github.com/gaohongxiang/atomicals/assets/33713367/48b4ef91-387e-446e-b0f1-db4e030e992a)
 
+>注：项目有两个`bitcoin.conf`配置文件，在项目根目录下的那个是示例，真正用到的在数据目录下，即`bitcoin_data`目录下。不要配置错了。可以直接通过bitcoin core客户端的选项里打开配置文件
+
 `bitcoin.conf`配置文件配置内容如下
 ```
 # 指示比特币节点运行为完整节点（full node），允许其他节点连接并获取区块链数据
@@ -254,19 +256,70 @@ rpcallowip=172.0.0.0/8
 git clone https://github.com/Next-DAO/atomicals-electrumx-docker.git
 ```
 
-##### 2.2 在atomicals-electrumx-docker目录下创建`.env`文件
-
-内容如下
-```
-DAEMON_URL=用户名:密码@<ip>:8332
-```
-用户名密码跟bitcoin配置文件一致。ip换成你比特币全节点所在的ip，如果在本地或者同一个机器，ip就填localhost或者127.0.0.1
-
-##### 2.3 替换docker-compose.yml文件
+##### 2.2 替换docker-compose.yml文件
 在atomicals-electrumx-proxy-docker项目下载docker-compose.yml文件，并替换文件夹内现有的同名文件
 ```
 https://github.com/Next-DAO/atomicals-electrumx-proxy-docker
 ```
+
+docker-compose.yml文件内容
+```
+version: '3'
+services:
+  proxy:
+    image: lucky2077/atomicals-electrumx-proxy:latest
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - ELECTRUMX_PORT=50001
+      - ELECTRUMX_HOST=electrumx
+    depends_on:
+      - electrumx
+  electrumx:
+    image: lucky2077/atomicals-electrumx:latest
+    restart: always
+    healthcheck:
+      test: "nc -z localhost 50001"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    volumes:
+      - ./electrumx-data:/data
+    environment:
+      - DAEMON_URL=username:password@ip:8332
+      - COIN=BitCoin
+      - PEER_DISCOVERY=off
+      - PEER_ANNOUNCE=""
+      - MAX_SEND=3000000
+```
+
+将DAEMON_URL
+```
+DAEMON_URL=username:password@ip:8332
+```
+换成自己的用户名密码和ip。用户名密码跟bitcoin配置文件一致。ip换成你比特币全节点所在的ip，局域网ip，如`192.168.0.1`。终端运行`ipconfig`命令可以查看
+
+---
+
+方式2: 在atomicals-electrumx-docker目录下创建`.env`文件
+
+内容如下
+```
+DAEMON_URL=username:password@ip:8332
+```
+
+然后怒将docker-compose.yml的DAEMON_URL字段换成如下
+```
+DAEMON_URL=${DAEMON_URL}
+```
+
+即：docker-compose.yml引用的.env文件的DAEMON_URL变量
+
+两种方式选其一
+
+---
 
 ##### 2.4 移动electrumx数据
 
