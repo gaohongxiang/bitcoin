@@ -191,6 +191,9 @@ magnet:?xt=urn:btih:7KW5OXSWUQ2EFF57URE42GBRL2XCN5AI&dn=ElectrumX-Data-20231114&
 >注：项目有两个`bitcoin.conf`配置文件，在项目根目录下的那个是示例，真正用到的在数据目录下，即`bitcoin_data`目录下。不要配置错了。可以直接通过bitcoin core客户端的选项里打开配置文件
 
 `bitcoin.conf`配置文件配置内容如下
+
+修改rpcuser、rpcpassword字段，自己设置，后面electrumx连接比特币节点要用到。
+
 ```
 # 指示比特币节点运行为完整节点（full node），允许其他节点连接并获取区块链数据
 server=1
@@ -257,12 +260,13 @@ git clone https://github.com/Next-DAO/atomicals-electrumx-docker.git
 ```
 
 ##### 2.2 替换docker-compose.yml文件
-在atomicals-electrumx-proxy-docker项目下载docker-compose.yml文件，并替换文件夹内现有的同名文件
-```
-https://github.com/Next-DAO/atomicals-electrumx-proxy-docker
-```
 
-docker-compose.yml文件内容
+用下面的docker-compose.yml文件替换atomicals-electrumx-docker项目下的同名文件
+
+docker-compose.yml文件内容如下
+
+修改 `DAEMON_URL=username:password@ip:8332` 字段，换成自己的用户名密码和ip。用户名密码跟bitcoin配置文件一致。ip换成你比特币全节点所在的ip，局域网ip，如`192.168.0.1`。终端运行`ipconfig`命令可以查看
+
 ```
 version: '3'
 services:
@@ -295,12 +299,6 @@ services:
       - MAX_SEND=3000000
 ```
 
-将DAEMON_URL
-```
-DAEMON_URL=username:password@ip:8332
-```
-换成自己的用户名密码和ip。用户名密码跟bitcoin配置文件一致。ip换成你比特币全节点所在的ip，局域网ip，如`192.168.0.1`。终端运行`ipconfig`命令可以查看
-
 ---
 
 方式2: 在atomicals-electrumx-docker目录下创建`.env`文件
@@ -321,7 +319,13 @@ DAEMON_URL=${DAEMON_URL}
 
 ---
 
-##### 2.4 移动electrumx数据
+docker-compose.yml文件是从此项目下载的，可以关注有没有更新
+```
+https://github.com/Next-DAO/atomicals-electrumx-proxy-docker/blob/main/docker-compose.yml
+```
+
+
+##### 2.3 移动electrumx数据
 
 将下载好的electrumx-data文件夹移动到tomicals-electrumx-docker目录
 
@@ -338,6 +342,9 @@ docker-compose pull
 ```
 docker-compose up -d
 ```
+
+启动后可以看到docker客户端开始同步区块数据。终端可以关闭
+
 
 ##### 3.3 打印日志查看区块同步进度
 ```
@@ -364,6 +371,14 @@ ELECTRUMX_PROXY_BASE_URL=http://localhost:8080/proxy
 
 至此私有节点搭建完毕。
 
+---
+
+有新项目时只需要提前同步好比特币节点数据和electrumx数据，并保持打开状态
+
+然后执行客户端cli（atomicals-js）的相应mint命令即可用自己搭建的节点来mint代币了
+
+---
+
 ### 常用命令
 
 检查electrumx是否准备就绪
@@ -381,10 +396,16 @@ docker-compose down
 
 ### 常见错误
 
+1、docker-compose不能用
+
+这个错误是因为windows系统下的问题，好像没有wsl2，自己百度。
+
+1、连接错误
 ```
 ERROR:Daemon:connection problem - check your daemon is running.  Retrying occasionally...
 ```
 
+这个错误是比特币配置文件没有配置好ip或者docker-compose.yml文件ip设置错误
 
 
 ## 参考
