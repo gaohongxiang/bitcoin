@@ -327,12 +327,14 @@ https://github.com/Next-DAO/atomicals-electrumx-proxy-docker/blob/main/docker-co
 
 ##### 2.3 移动electrumx数据
 
-将下载好的electrumx-data文件夹移动到tomicals-electrumx-docker目录
+将下载好的electrumx-data文件夹移动到tomicals-electrumx-docker目录下
 
 上面3步操作完成后重启电脑
 
 
 ### 3、docker镜像
+
+首先确保终端在项目根目录下，不在就cd进去
 
 ##### 3.1 拉取镜像
 ```
