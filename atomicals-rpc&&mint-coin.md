@@ -373,6 +373,9 @@ ELECTRUMX_PROXY_BASE_URL=http://localhost:8080/proxy
 
 至此私有节点搭建完毕。
 
+
+不用docker的方案，作为参考：https://twitter.com/zhangch30063843/status/1725851723930227095
+
 ---
 
 有新项目时只需要提前同步好比特币节点数据和electrumx数据，并保持打开状态
@@ -419,5 +422,4 @@ ERROR:Daemon:connection problem - check your daemon is running.  Retrying occasi
 - 如何搭建 Bitcoin Core 比特币全节点：https://yishi.io/how-to-run-bitcoin-full-node/
 - 如何极速同步Bitcoin 全节点：https://twitter.com/weixiaoqvq/status/1716014155730465267
 - Atomicals私有节点数据下载磁力链接：https://mirror.xyz/cyberscavenger.eth/bjOEWmZt_LaQsvDj2o8_uO_X0SXdaT4S51Tfr0gva0g
-
 
