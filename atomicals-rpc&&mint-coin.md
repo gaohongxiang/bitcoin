@@ -72,7 +72,24 @@ yarn install
 yarn build
 ```
 
-### 4、创建钱包
+### 4、节点
+目前有几个公共节点可以使用。编辑.env文件，把`ELECTRUMX_PROXY_BASE_URL`内容替换成下面内容
+```
+# 官方节点
+ELECTRUMX_PROXY_BASE_URL=https://ep.atomicals.xyz/proxy
+# # NextDao节点
+# ELECTRUMX_PROXY_BASE_URL=https://ep.nextdao.xyz/proxy
+# # Consync节点
+# ELECTRUMX_PROXY_BASE_URL=https://ep.consync.xyz/proxy
+# # Wizz.Cash节点
+# ELECTRUMX_PROXY_BASE_URL=https://ep.atomicalswallet.com/proxy
+# # Atomical Market节点
+# ELECTRUMX_PROXY_BASE_URL=https://ep.atomicalmarket.com/proxy
+```
+如果使用的公共节点挂了，可以换成其他的节点试试
+
+
+### 5、创建钱包
 ```
 yarn cli wallet-init
 ```
