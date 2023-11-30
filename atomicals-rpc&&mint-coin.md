@@ -59,14 +59,17 @@ mkdir atomicals && cd atomicals
 # github 克隆
 git clone https://github.com/atomicals/atomicals-js.git
 
+# 进入项目目录
+cd atomicals-js
+
+# 安装 yarn
+npm install -g yarn
+
 # 安装依赖
-cd atomicals-js && npm install
+yarn install
 
 # 编译（完成后会有一个dist文件夹）
-npm run build
-
-# 安装 yarn（后续命令会用到）
-npm install -g yarn
+yarn build
 ```
 
 ### 4、创建钱包
