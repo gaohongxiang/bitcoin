@@ -272,45 +272,20 @@ rpcallowip=172.0.0.0/8
 
 注册并登录
 
-### 2、拉取atomicals-electrumx-docker并配置
+### 2、拉取atomicals-electrumx-proxy-docker并配置
 
-##### 2.1 拉取atomicals-electrumx-docker
+##### 2.1 拉取atomicals-electrumx-proxy-docker
 ```
-git clone https://github.com/Next-DAO/atomicals-electrumx-docker.git
+git clone https://github.com/Next-DAO/atomicals-electrumx-proxy-docker.git
 ```
 
-##### 2.2 替换docker-compose.yml文件
-
-用下面的docker-compose.yml文件替换atomicals-electrumx-docker项目下的同名文件
+##### 2.2 修改docker-compose.yml文件
 
 docker-compose.yml文件内容如下
 
 修改 `DAEMON_URL=username:password@ip:8332` 字段，换成自己的用户名密码和ip。用户名密码跟bitcoin配置文件一致。ip换成你比特币全节点所在的ip，局域网ip，如`192.168.0.1`。终端运行`ipconfig`命令可以查看
 
 ```
-version: '3'
-services:
-  proxy:
-    image: lucky2077/atomicals-electrumx-proxy:latest
-    restart: always
-    ports:
-      - 8080:8080
-    environment:
-      - ELECTRUMX_PORT=50001
-      - ELECTRUMX_HOST=electrumx
-    depends_on:
-      - electrumx
-  electrumx:
-    image: lucky2077/atomicals-electrumx:latest
-    restart: always
-    healthcheck:
-      test: "nc -z localhost 50001"
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-    volumes:
-      - ./electrumx-data:/data
     environment:
       - DAEMON_URL=username:password@ip:8332
       - COIN=BitCoin
@@ -318,10 +293,9 @@ services:
       - PEER_ANNOUNCE=""
       - MAX_SEND=3000000
 ```
-
 ---
 
-方式2: 在atomicals-electrumx-docker目录下创建`.env`文件
+方式2: 在atomicals-electrumx-proxy-docker目录下创建`.env`文件
 
 内容如下
 ```
@@ -338,12 +312,6 @@ DAEMON_URL=${DAEMON_URL}
 两种方式选其一
 
 ---
-
-docker-compose.yml文件是从此项目下载的，可以关注有没有更新
-```
-https://github.com/Next-DAO/atomicals-electrumx-proxy-docker/blob/main/docker-compose.yml
-```
-
 
 ##### 2.3 移动electrumx数据
 
