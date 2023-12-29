@@ -152,6 +152,17 @@ yarn cli transfer-ft atom
 ```
 参考：https://mirror.xyz/xiaonezhalab.eth/BWpbBheadJFkjaTE4kzrwX5Yp_kLw5TAwagrfD2qFp4
 
+### 拉取最新代码并重新编译
+```
+# 拉取最新代码
+git pull
+
+# 安装依赖（有可能新代码使用了新的依赖）
+yarn install
+
+# 重新编译
+yarn build
+```
 
 # 三、通过客户端cli（atomicals-js）+ 私有RPC节点 铸造代币
 
