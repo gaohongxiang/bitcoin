@@ -128,7 +128,11 @@ yarn cli mint-realm btc --satsbyte 30 --satsoutput 1000 --bitworkc 3165
 
 3、铸造图片NFT命令
 ```
-yarn cli mint-nft "E:\Crypto\NFT\CryptoPunks\punk0000.png" --satsbyte 30 --satsoutput 1000 --bitworkc 3165
+# 查重（示例：查询编号9750的toothy有没有被别人打，返回为空代表没被打）
+yarn cli get-container-item "#toothy" "9750"
+
+# 铸造（示例：铸造编号为9750的toothy。容器名称'#toothy'，json文件存放位置'./dmint/toothy/item-9740.json'，gas 150）
+yarn cli mint-item "#toothy" "9750" ./dmint/toothy/item-9750.json --satsbyte 150
 ```
 
 铸造命令给出后会如果代币还有的话会给出收款二维码，地址以及需要的金额，充钱进去就会开始挖矿，挖矿成功会提示success。提前充钱进去会省很多时间。
