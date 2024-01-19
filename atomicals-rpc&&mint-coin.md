@@ -171,6 +171,16 @@ yarn cli mint-item "#toothy" "9750" ../../dmint/toothy/item-9750.json --funding 
 
 铸造命令给出后会如果代币还有的话会给出收款二维码，地址以及需要的金额，充钱进去就会开始挖矿，挖矿成功会提示success。提前充钱进去会省很多时间。
 
+#### 帮助命令
+```
+# 总的帮助命令
+yarn cli -h
+# dft的帮助命令
+yarn cli mint-dft -h
+# item的帮助命令
+yarn cli mint-item -h
+```
+
 #### 查询余额命令
 ```
 # 查询atom余额
