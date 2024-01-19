@@ -22,7 +22,7 @@
 
 - wizz官网:https://wizz.cash/mining (推荐，更新比较快。mint速度非常快。钱包的mint入口进入)
 - satsx官网：https://www.satsx.io/atomicals
-- - atom市场：https://atomicalmarket.com/inscribe 
+- atom市场：https://atomicalmarket.com/inscribe 
 
 # 二、通过客户端cli + 公共RPC节点 铸造代币
 
@@ -91,7 +91,7 @@ yarn build
 yarn cli wallet-init
 ```
 执行创建钱包命令后会在当前目录下会生成 wallet.json 钱包信息，注意保存好 wallet.json 钱包文件
->说明：创建钱包后，会自动生成2个地址，Primary Address和Funding Address，其中Primary是用于接收Atomicals生态资产的，比如ARC20代币、图片NFT等，Funding是用于铸造（挖矿）过程的中转钱包，通常是往Funding地址中存入相应数量的BTC，用于铸造。可以提前充值进去。
+>说明：创建钱包后，会自动生成2个地址，Primary Address和Funding Address，其中Primary是用于接收Atomicals生态资产的，比如ARC20代币、图片NFT等，Funding是用于铸造的付款钱包，可以提前充值进去。
 
 ##### 准备多钱包（导入）
 
@@ -146,10 +146,10 @@ yarn cli mint-dft atom --satsbyte 30
 yarn cli mint-dft atom --funding 'f1' --initialowner 'p1' --satsbyte 30 
 
 ```
-- 'atom'指铸造的代币名称，根据实际情况修改
-- '--satsbyte 30' 支付的gas
-- 'funding f1' 付款钱包，f1为wallet.json文件导入的钱包，别名f1
-- 'initialowner p1' 接收铭文钱包
+- `atom`指铸造的代币名称，根据实际情况修改
+- `--satsbyte 30` 支付的gas
+- `funding f1` 付款钱包，f1为wallet.json文件导入的钱包，别名f1
+- `initialowner p1` 接收铭文钱包
 
 #### 铸造Realm命令
 ```
@@ -434,8 +434,7 @@ docker-compose logs -f
 
 只有等区块完全同步了才能开始用
 
-
-## 3.4 替换客户端cli（atomicals-js）的RPC节点
+## 3.4 替换客户端cli的RPC节点
 
 ### 3.4.1 检查本地节点状态：在浏览器地址栏输入 
 ```
