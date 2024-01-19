@@ -1,7 +1,7 @@
 铸造代币有三种参与方式
 1. 通过代打平台铸造代币
-2. 通过客户端cli（atomicals-js）+ 公共RPC节点 铸造代币
-3. 通过客户端cli（atomicals-js）+ 私有RPC节点 铸造代币
+2. 通过客户端cli + 公共RPC节点 铸造代币
+3. 通过客户端cli + 私有RPC节点 铸造代币
 
 
 操作难易程度：1 > 2 > 3
@@ -23,25 +23,18 @@
 - atom官方网站：https://atomicalmarket.com/inscribe 
 - satsx官方网站：https://www.satsx.io/atomicals
 
-# 二、通过客户端cli（atomicals-js）+ 公共RPC节点 铸造代币
+# 二、通过客户端cli + 公共RPC节点 铸造代币
 
-项目依赖
-- node
+目前有两个客户端，一个是atomicals协议官方js版本的`atomicals-js`，另一个是推特用户AurevoirXavier写的rust版本的`atomicalsir`。两个用哪个都行，rust版本不是纯净版，目前依赖atomicals-js，引擎可以选rust，速度会比js快。
+
+准备
 - git
-- 客户端cli（atomicals-js）
+- node
+- rust
 
 >注：命令都是在终端中执行的，win下的终端如`cmd`、`PowerShell`都需要右键以管理员身份打开，否则容易权限不足
 
-### 1、安装node
-
-https://nodejs.org/en
-
-终端输入命令查看node版本
-```
-node -v
-```
-
-### 2、安装git
+#### 1、安装git
 
 https://git-scm.com/downloads
 
@@ -50,7 +43,26 @@ https://git-scm.com/downloads
 git -v
 ```
 
-### 3、克隆并编译atomicals-js项目
+#### 2、安装node
+
+https://nodejs.org/en
+
+终端输入命令查看node版本
+```
+node -v
+```
+
+#### 3、安装rust
+```
+# 安装rustup（rust的包管理工具）
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# 安装nightly版rust（atomicalsir使用的此版本）
+rustup install nightly
+# 查看版本
+rustc --version
+```
+
+## 使用atomicals-js（js版cli）
 
 ```
 # 创建工作目录
@@ -72,54 +84,67 @@ yarn install
 yarn build
 ```
 
-### 4、节点
-目前有几个公共节点可以使用。编辑.env文件，把`ELECTRUMX_PROXY_BASE_URL`内容替换成下面内容
-```
-# 官方节点
-ELECTRUMX_PROXY_BASE_URL=https://ep.atomicals.xyz/proxy
-# # NextDao节点
-# ELECTRUMX_PROXY_BASE_URL=https://ep.nextdao.xyz/proxy
-# # Consync节点
-# ELECTRUMX_PROXY_BASE_URL=https://ep.consync.xyz/proxy
-# # Wizz.Cash节点
-# ELECTRUMX_PROXY_BASE_URL=https://ep.atomicalswallet.com/proxy
-# # Atomical Market节点
-# ELECTRUMX_PROXY_BASE_URL=https://ep.atomicalmarket.com/proxy
-```
-如果使用的公共节点挂了，可以换成其他的节点试试
-
-
-### 5、创建钱包
+### 创建钱包
 ```
 yarn cli wallet-init
 ```
 执行创建钱包命令后会在当前目录下会生成 wallet.json 钱包信息，注意保存好 wallet.json 钱包文件
 >说明：创建钱包后，会自动生成2个地址，Primary Address和Funding Address，其中Primary是用于接收Atomicals生态资产的，比如ARC20代币、图片NFT等，Funding是用于铸造（挖矿）过程的中转钱包，通常是往Funding地址中存入相应数量的BTC，用于铸造。可以提前充值进去。
 
-### 常见问题
-
-1、命令卡住
-
-命令卡住了按`ctrl c`终止，然后重新输入命令
-
-2、多打
-
-1个钱包1次打一张，想多打的话可以提前准备多个钱包。
-1. 将wallet.json文件暂存到别的地方，复制atomicals文件夹，然后再将wallet.json文件转移回来
-2. 将复制的atomicals文件夹多创建几份，每个文件夹里运行`yarn cli wallet-init`命令，生成新的钱包
-3. 给钱包转钱
-4. 每个atomicals文件夹开一个终端，铸造代币
+多钱包（导入）
+wallet.json结构如下。其中`p1 f1`、`p2 f2`是导入的钱包
+```
+{
+  "phrase": "...",
+  "primary": {
+    "address": "...",
+    "path": "m/86'/0'/0'/0/0",
+    "WIF": "..."
+  },
+  "funding": {
+    "address": "...",
+    "path": "m/86'/0'/0'/1/0",
+    "WIF": "..."
+  },
+  "imported": {
+    "p1": {
+      "address": "...",
+      "path": "m/86'/0'/0'/0/0",
+      "WIF": "..."
+    },
+    "f1": {
+      "address": "...",
+      "path": "m/86'/0'/0'/1/0",
+      "WIF": "..."
+    }
+    "p2": {
+      "address": "...",
+      "path": "m/86'/0'/0'/0/0",
+      "WIF": "..."
+    },
+    "f2": {
+      "address": "...",
+      "path": "m/86'/0'/0'/1/0",
+      "WIF": "..."
+    }
+  }
+}
+```
 
 ### 常用命令
 
 1、铸造FT币命令
 ```
+# 使用默认钱包
 yarn cli mint-dft atom --satsbyte 30
+# 使用导入钱包，钱包f1付款，钱包p1接收铭文
+yarn cli mint-dft atom --funding 'f1' --initialowner 'p1' --satsbyte 30 
+
 ```
 - 'atom'指铸造的代币名称，根据实际情况修改
-- '--satsbyte 30' 是设置的gas，注意这里设置的gas，与实际上链的gas是1.8-2倍的关系，比如这里设置30，实际上链gas是54-60sats/vB。
-
->举例：实际gas是80，需要快点打上gas拉高10，按1:1.8计算，需要设置gas为90/1.8=50
+- '--satsbyte 30' 支付的gas
+- 'funding f1' 付款钱包，f1为wallet.json文件导入的钱包，别名f1
+- 'initialowner p1' 接收铭文钱包
 
 2、铸造Realm命令
 ```
@@ -128,11 +153,15 @@ yarn cli mint-realm btc --satsbyte 30 --satsoutput 1000 --bitworkc 3165
 
 3、铸造图片NFT命令
 ```
+# 查看nft集合信息
+yarn cli get-container "toothy"
+
 # 查重（示例：查询编号9750的toothy有没有被别人打，返回为空代表没被打）
 yarn cli get-container-item "#toothy" "9750"
 
 # 铸造（示例：铸造编号为9750的toothy。容器名称'#toothy'，json文件存放位置'../../dmint/toothy/item-9740.json'，根据自己存放位置进行相应更改，gas 150）
 yarn cli mint-item "#toothy" "9750" ../../dmint/toothy/item-9750.json --satsbyte 150
+yarn cli mint-item "#toothy" "9750" ../../dmint/toothy/item-9750.json --funding 'f1' --initialowner 'p1' --satsbyte 150
 ```
 
 铸造命令给出后会如果代币还有的话会给出收款二维码，地址以及需要的金额，充钱进去就会开始挖矿，挖矿成功会提示success。提前充钱进去会省很多时间。
@@ -167,6 +196,47 @@ yarn install
 # 重新编译
 yarn build
 ```
+
+## 使用atomicalsir（rust版cli）
+
+### 1、安装atomicals-js
+步骤同上
+
+### 2、安装atomicalsir
+
+在atomicals-js同目录下执行以下命令
+```
+git clone https://github.com/hack-ink/atomicalsir.git
+cd atomicalsir
+cargo build --release
+```
+
+```
+# 使用以下命令创建一个符号链接指向您的 atomicalsir 可执行文件
+sudo ln -s ~/projects/blockchain/bitcoin/atomicals-project/rust/atomicalsir/target/release/atomicalsir /usr/local/bin/atomicalsir
+
+sudo ./atomicalsir/target/release/atomicalsir --network testnet --rust-engine ./atomicalsir/target/release/atomicalsir --ticker atomicalsir4
+sudo ./atomicalsir/target/release/atomicalsir --rust-engine ./atomicals-js/wallets --ticker atomicalsir4
+```
+
+## 节点
+目前有几个公共节点可以使用。
+```
+# 官方节点
+https://ep.atomicals.xyz/proxy
+# NextDao节点
+https://ep.nextdao.xyz/proxy
+# Neutron节点
+https://ep.atomicalneutron.com/proxy
+# Consync节点
+https://ep.consync.xyz/proxy
+# Wizz.Cash节点
+https://ep.atomicalswallet.com/proxy
+# Atomical Market节点
+https://ep.atomicalmarket.com/proxy
+```
+如果使用的公共节点挂了，可以换成其他的节点试试。编辑.env文件，在`ELECTRUMX_PROXY_BASE_URL`后面添加节点即可，用逗号分隔。
+
 
 # 三、通过客户端cli（atomicals-js）+ 私有RPC节点 铸造代币
 
