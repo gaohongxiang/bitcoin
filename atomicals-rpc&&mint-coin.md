@@ -505,4 +505,4 @@ ERROR:Daemon:connection problem - check your daemon is running.  Retrying occasi
 - 如何搭建 Bitcoin Core 比特币全节点：https://yishi.io/how-to-run-bitcoin-full-node/
 - 如何极速同步Bitcoin 全节点：https://twitter.com/weixiaoqvq/status/1716014155730465267
 - Atomicals私有节点数据下载磁力链接：https://mirror.xyz/cyberscavenger.eth/bjOEWmZt_LaQsvDj2o8_uO_X0SXdaT4S51Tfr0gva0g
-
+- Atomicals dmint 进阶指南：https://github.com/wusimpl/atommical-js-tools/blob/main/Atomicals%20dmint%20%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97.pdf
