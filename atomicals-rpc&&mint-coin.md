@@ -20,21 +20,22 @@
 
 # 一、通过代打平台铸造代币
 
-- atom官方网站：https://atomicalmarket.com/inscribe 
-- satsx官方网站：https://www.satsx.io/atomicals
+- wizz官网:https://wizz.cash/mining (推荐，更新比较快。mint速度非常快。钱包的mint入口进入)
+- satsx官网：https://www.satsx.io/atomicals
+- - atom市场：https://atomicalmarket.com/inscribe 
 
 # 二、通过客户端cli + 公共RPC节点 铸造代币
 
 目前有两个客户端，一个是atomicals协议官方js版本的`atomicals-js`，另一个是推特用户AurevoirXavier写的rust版本的`atomicalsir`。两个用哪个都行，rust版本不是纯净版，目前依赖atomicals-js，引擎可以选rust，速度会比js快。
 
-准备
+## 2.1 准备
 - git
 - node
 - rust
 
 >注：命令都是在终端中执行的，win下的终端如`cmd`、`PowerShell`都需要右键以管理员身份打开，否则容易权限不足
 
-#### 1、安装git
+### 2.1.1 安装git
 
 https://git-scm.com/downloads
 
@@ -43,7 +44,7 @@ https://git-scm.com/downloads
 git -v
 ```
 
-#### 2、安装node
+### 2.1.2 安装node
 
 https://nodejs.org/en
 
@@ -52,7 +53,7 @@ https://nodejs.org/en
 node -v
 ```
 
-#### 3、安装rust
+### 2.1.3 安装rust
 ```
 # 安装rustup（rust的包管理工具）
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -62,8 +63,9 @@ rustup install nightly
 rustc --version
 ```
 
-## 使用atomicals-js（js版cli）
+## 2.2 使用atomicals-js（js版cli）
 
+### 2.2.1 拉取并编译项目
 ```
 # 创建工作目录
 mkdir atomicals && cd atomicals
@@ -84,14 +86,17 @@ yarn install
 yarn build
 ```
 
-### 创建钱包
+### 2.2.2 创建钱包
 ```
 yarn cli wallet-init
 ```
 执行创建钱包命令后会在当前目录下会生成 wallet.json 钱包信息，注意保存好 wallet.json 钱包文件
 >说明：创建钱包后，会自动生成2个地址，Primary Address和Funding Address，其中Primary是用于接收Atomicals生态资产的，比如ARC20代币、图片NFT等，Funding是用于铸造（挖矿）过程的中转钱包，通常是往Funding地址中存入相应数量的BTC，用于铸造。可以提前充值进去。
 
-多钱包（导入）
+##### 准备多钱包（导入）
+
+一个钱包受限于gas高低及链上出块速度。往往需要准备多个钱包同时mint。将创建的多个钱包存入钱包文件的`imported`字段即可
+
 wallet.json结构如下。其中`p1 f1`、`p2 f2`是导入的钱包
 ```
 {
@@ -131,9 +136,9 @@ wallet.json结构如下。其中`p1 f1`、`p2 f2`是导入的钱包
 }
 ```
 
-### 常用命令
+### 2.2.3 常用命令
 
-1、铸造FT币命令
+#### 铸造FT币命令
 ```
 # 使用默认钱包
 yarn cli mint-dft atom --satsbyte 30
@@ -146,12 +151,12 @@ yarn cli mint-dft atom --funding 'f1' --initialowner 'p1' --satsbyte 30
 - 'funding f1' 付款钱包，f1为wallet.json文件导入的钱包，别名f1
 - 'initialowner p1' 接收铭文钱包
 
-2、铸造Realm命令
+#### 铸造Realm命令
 ```
 yarn cli mint-realm btc --satsbyte 30 --satsoutput 1000 --bitworkc 3165
 ```
 
-3、铸造图片NFT命令
+#### 铸造图片NFT命令
 ```
 # 查看nft集合信息
 yarn cli get-container "toothy"
@@ -166,26 +171,29 @@ yarn cli mint-item "#toothy" "9750" ../../dmint/toothy/item-9750.json --funding 
 
 铸造命令给出后会如果代币还有的话会给出收款二维码，地址以及需要的金额，充钱进去就会开始挖矿，挖矿成功会提示success。提前充钱进去会省很多时间。
 
-4、查询余额命令
+#### 查询余额命令
 ```
 # 查询atom余额
 yarn cli balances atom
 ```
 
-5、查总量
+#### 查总量
 ```
 # 查询atom总量
 yarn cli location atom
 ```
 
-6、转移代币
+#### 转移代币
 ```
 # 转移atom
 yarn cli transfer-ft atom
 ```
 参考：https://mirror.xyz/xiaonezhalab.eth/BWpbBheadJFkjaTE4kzrwX5Yp_kLw5TAwagrfD2qFp4
 
-### 拉取最新代码并重新编译
+### 2.2.4 拉取最新代码并重新编译
+
+项目代码更新的话就需要拉取最新代码，并重新编译
+
 ```
 # 拉取最新代码
 git pull
@@ -197,12 +205,12 @@ yarn install
 yarn build
 ```
 
-## 使用atomicalsir（rust版cli）
+## 2.3 使用atomicalsir（rust版cli）
 
-### 1、安装atomicals-js
+### 2.3.1 安装atomicals-js
 步骤同上
 
-### 2、安装atomicalsir
+### 2.3.2 安装atomicalsir
 
 在atomicals-js同目录下执行以下命令
 ```
@@ -219,8 +227,9 @@ sudo ./atomicalsir/target/release/atomicalsir --network testnet --rust-engine ./
 sudo ./atomicalsir/target/release/atomicalsir --rust-engine ./atomicals-js/wallets --ticker atomicalsir4
 ```
 
-## 节点
-目前有几个公共节点可以使用。
+## 2.4 节点
+
+当mint的项目比较热门的时候可能会导致公共节点瘫痪，这时候就需要换成其他的节点试试。目前有几个公共节点可以使用。
 ```
 # 官方节点
 https://ep.atomicals.xyz/proxy
@@ -235,14 +244,12 @@ https://ep.atomicalswallet.com/proxy
 # Atomical Market节点
 https://ep.atomicalmarket.com/proxy
 ```
-如果使用的公共节点挂了，可以换成其他的节点试试。编辑.env文件，在`ELECTRUMX_PROXY_BASE_URL`后面添加节点即可，用逗号分隔。
+编辑.env文件，在`ELECTRUMX_PROXY_BASE_URL`后面添加节点即可，用逗号分隔。
 
 
-# 三、通过客户端cli（atomicals-js）+ 私有RPC节点 铸造代币
+# 三、通过客户端cli + 私有RPC节点 铸造代币
 
 客户端cli部分同上。这部分重点介绍搭建私有Atomicals RPC节点。
-
-## 搭建私有Atomicals RPC节点
 
 项目依赖
 - 一台cpu好点的电脑，一个2T的SSD固态硬盘（挖矿靠cpu，存储读写数据靠ssd固态硬盘。目前比特币全节点数据608G，electrumx数据94G，2T预留未来空间）
@@ -253,7 +260,7 @@ https://ep.atomicalmarket.com/proxy
 
 ![image](https://github.com/gaohongxiang/atomicals/assets/33713367/92bbf577-6a06-4722-9ecd-1229eea598bd)
 
-#### 准备工作
+## 3.1 准备工作
 由于比特币全节点数据和electrumx数据都非常大，从头开始同步的话会很慢，所以，我们可以提前下载别人打包好的数据，然后只需要同步后面新产生的数据就好了。这样会节省很多时间。
 
 打包好的比特币节点数据（截止到2022.8）
@@ -272,9 +279,9 @@ magnet:?xt=urn:btih:7KW5OXSWUQ2EFF57URE42GBRL2XCN5AI&dn=ElectrumX-Data-20231114&
 >解压后比特币数据包含`blocks`、`chainstate`两个文件夹。electruumx-data包含三个文件夹三个文件。
 
 
-## 一、同步比特币节点
+## 3.2 同步比特币节点
 
-#### 1、下载bitcoin core并配置
+### 3.2.1 下载bitcoin core并配置
 
 官网：https://bitcoincore.org/en/download/
 
@@ -339,32 +346,32 @@ rpcallowip=172.0.0.0/8
 
 配置好后重启bitcoin core生效。
 
-#### 2、移动打包好的数据
+### 3.2.2 移动打包好的数据
 
 将第一步下载的打包好的比特币数据移动到`bitcoin_data`文件夹下，替换掉`blocks`和`chainstate`这两个文件夹。
 
 ![image](https://github.com/gaohongxiang/atomicals/assets/33713367/cec0eae5-f0f8-42eb-b19c-cbe95d68f973)
 
-#### 3、同步比特币数据
+### 3.2.3 同步比特币数据
 
 再次打开bitcoin core软件，数据开始同步，可以看到，我们下载好的数据不需要重新同步了，只需要同步剩下的数据就好了，耐心等待，需要几个小时才能同步完。同步完成后就有了比特币全节点数据！
 
-## 二、同步 ATOM 的索引数据
+## 3.3 同步 ATOM 的索引数据
 
-### 1、安装docker
+### 3.3.1 安装docker
 
 官网：https://www.docker.com/
 
 注册并登录
 
-### 2、拉取atomicals-electrumx-proxy-docker并配置
+### 3.3.2 拉取atomicals-electrumx-proxy-docker并配置
 
-##### 2.1 拉取atomicals-electrumx-proxy-docker
+##### 拉取atomicals-electrumx-proxy-docker
 ```
 git clone https://github.com/Next-DAO/atomicals-electrumx-proxy-docker.git
 ```
 
-##### 2.2 修改docker-compose.yml文件
+##### 修改docker-compose.yml文件
 
 docker-compose.yml文件内容如下
 
@@ -398,30 +405,29 @@ DAEMON_URL=${DAEMON_URL}
 
 ---
 
-##### 2.3 移动electrumx数据
+### 3.3.3 移动electrumx数据
 
 将下载好的electrumx-data文件夹移动到tomicals-electrumx-docker目录下
 
 上面3步操作完成后重启电脑
 
-
-### 3、docker镜像
+### 3.3.4  拉取docker镜像并运行
 
 首先确保终端在项目根目录下，不在就cd进去
 
-##### 3.1 拉取镜像
+##### 拉取镜像
 ```
 docker-compose pull
 ```
-##### 3.2 启动镜像
+##### 启动镜像
 ```
 docker-compose up -d
 ```
 
-启动后可以看到docker客户端开始同步区块数据。终端可以关闭
+启动后可以看到docker客户端开始同步区块数据。终端可以关闭。等待docker同步完数据。
 
 
-##### 3.3 打印日志查看区块同步进度
+##### 打印日志查看区块同步进度
 ```
 docker-compose logs -f
 ```
@@ -429,16 +435,15 @@ docker-compose logs -f
 只有等区块完全同步了才能开始用
 
 
-### 4、替换客户端cli（atomicals-js）的RPC节点
+## 3.4 替换客户端cli（atomicals-js）的RPC节点
 
-
-##### 4.1 检查本地节点状态：在浏览器地址栏输入 
+### 3.4.1 检查本地节点状态：在浏览器地址栏输入 
 ```
 http://127.0.0.1:8080/proxy/health
 ```
 如果返回 “success”：true 则表示节点运行正常，等待区块数据同步后即可正常使用。
 
-##### 4.2 替换PRC节点
+### 3.4.2 替换PRC节点
 打开atomicals-js文件夹里的.env文件，替换原有节点URL为：
 ```
 ELECTRUMX_PROXY_BASE_URL=http://localhost:8080/proxy
@@ -453,26 +458,32 @@ ELECTRUMX_PROXY_BASE_URL=http://localhost:8080/proxy
 
 有新项目时只需要提前同步好比特币节点数据和electrumx数据，并保持打开状态
 
-然后执行客户端cli（atomicals-js）的相应mint命令即可用自己搭建的节点来mint代币了
+然后执行客户端cli的相应mint命令即可用自己搭建的节点来mint代币了
 
 ---
 
-### 常用命令
+### 3.4.3 常用命令
 
 检查electrumx是否准备就绪
-
+```
 docker-compose ps
-
+```
 使用cmd查看进度
-
+```
 docker-compose logs -f
-
+```
 关闭服务器
-
+```
 docker-compose down
+```
+
+### 3.4.4 更新
+项目代码更新的话就需要拉取最新代码，并重新编译
+
+ `git pull`拉取最新代码，然后docker客户端删除之前镜像，重新执行3.3.4小节命令
 
 
-### 常见错误
+### 3.4.5 常见错误
 
 1、docker-compose不能用
 
