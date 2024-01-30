@@ -1,3 +1,7 @@
+前提：开启比特币全节点
+
+![image](https://github.com/gaohongxiang/atomicals/assets/33713367/92bbf577-6a06-4722-9ecd-1229eea598bd)
+
 ## 准备工作
 
 由于electrumx数据非常大，从头开始同步的话会很慢，所以，我们可以提前下载别人打包好的数据，然后只需要同步后面新产生的数据就好了。这样会节省很多时间。

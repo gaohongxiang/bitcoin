@@ -1,3 +1,7 @@
+开放协议索引器 (OPI) 是比特币元协议中最好的开源索引客户端。
+
+项目github：https://github.com/bestinslot-xyz/OPI
+
 OPI全节点搭建教程:https://cyberscavenger.notion.site/OPI-debfbead088648279a5c42cba8391a6c
 
 教程是windows和ubuntu系统的。mac系统
