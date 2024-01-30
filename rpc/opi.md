@@ -100,3 +100,6 @@ python brc20_index.py
 cd brc20_abi
 node api.js
 ```
+
+节点数据同步完后，去官方网站搜下自己的名字，如果能搜到就代表运行成功了。
+- https://opi.network/
