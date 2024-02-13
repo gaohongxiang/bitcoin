@@ -46,6 +46,10 @@ cat /opt/homebrew/var/log/postgresql@14.log
 ```
 有时候postgresql报错需要看下日志文件定位错误
 
+清理 Homebrew 安装的 PostgreSQL@14 版本的过期文件和不需要的资源。执行此命令后，Homebrew 会删除旧版本的安装文件，以释放磁盘空间。
+```
+brew cleanup postgresql@14
+```
 
 如果没有postgres用户需要创建
 ```
