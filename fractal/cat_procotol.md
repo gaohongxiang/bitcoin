@@ -158,8 +158,12 @@ sudo yarn cli send -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ec
 第二点可以通过运行下面的指令来修复。
 
 ```
-sudo yarn cli wallet export --create=true
+sudo yarn cli wallet export
+```
 
+如果不行就用下面命令
+```
+sudo yarn cli wallet export --create=true
 ```
 
 
