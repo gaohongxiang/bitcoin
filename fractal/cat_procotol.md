@@ -117,6 +117,16 @@ chmod +x script.sh
 ./script.sh --fee-rate 1000
 ```
 
+#### 关闭merge
+
+由于项目热度高，打的人多，导致gas居高不下。而官方代码每次mint前都会先merge一下，这个操作特别贵，mint的时候可以先关了这个操作，等mint结束后gas降下来再进行merge操作，会节省很多gas。
+
+1、项目目录下搜索`this.merge`,定位文件`mint.command.ts`，将`this.merge`这一行代码注释掉。
+2、删除`cli`目录下的`dist`文件夹 : `sudo rm -rf dist`
+3、重新执行`sudo yarn build`
+
+当mint完成后，打开merge操作，上面步骤反向操作。然后执行mint操作，程序会先merge代币，merge流程结束就可以停止程序了。
+
 ### 常用命令
 
 ```
