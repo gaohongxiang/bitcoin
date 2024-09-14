@@ -136,7 +136,7 @@ sudo yarn cli wallet balances
 sudo yarn cli mint -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 5 --fee-rate 500
 
 // 转账
-yarn cli send -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 接收地址 数量
+sudo yarn cli send -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 接收地址 数量 --fee-rate 500
 ```
 
 FB 浏览器（查交易、查余额、查gas）
