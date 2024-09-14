@@ -117,7 +117,7 @@ chmod +x script.sh
 ./script.sh --fee-rate 1000
 ```
 
-常用命令
+### 常用命令
 
 ```
 // 查区块同步：
@@ -138,6 +138,20 @@ sudo yarn cli mint -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ec
 // 转账
 sudo yarn cli send -i 45ee725c2c5993b3e4d308842d87e973bf1951f5f7a804b21e4dd964ecd12d6b_0 接收地址 数量 --fee-rate 500
 ```
+
+### 常见错误
+
+#### 1、Insufficient satoshis balance!
+
+如果明明钱包里有钱却报`Insufficient satoshis balance!`错误，有两种可能，第一是节点没有同步，第二是创建的钱包没有正确导入节点。
+
+第二点可以通过运行下面的指令来修复。
+
+```
+sudo yarn cli wallet export --create=true
+
+```
+
 
 FB 浏览器（查交易、查余额、查gas）
 
